@@ -68,30 +68,115 @@
 // }
 
 // CODING CHALLENGE 3: ====================
-const foodBills = [124, 48, 268];
-const tipBills = [];
-const totalBills = [];
+// const foodBills = [124, 48, 268];
+// const tipBills = [];
+// const totalBills = [];
 
-tipCalc = bill => {
-  let tip = 0;
+// tipCalc = bill => {
+//   let tip = 0;
 
-  switch (true) {
-    case bill < 50:
-      return (tip = bill * 0.2);
-    case bill >= 50 && bill < 200:
-      return (tip = bill * 0.15);
-    default:
-      return (tip = bill * 0.1);
+//   switch (true) {
+//     case bill < 50:
+//       return (tip = bill * 0.2);
+//     case bill >= 50 && bill < 200:
+//       return (tip = bill * 0.15);
+//     default:
+//       return (tip = bill * 0.1);
+//   }
+// };
+
+// foodBills.forEach(bill => {
+//   tipBills.push(tipCalc(bill));
+// });
+
+// for (let i = 0; i < foodBills.length; i++) {
+//   totalBills.push(foodBills[i] + tipBills[i]);
+// }
+
+// console.log(tipBills);
+// console.log(totalBills);
+
+//CODING CHALLENGE 4: ===================
+
+// let john = {
+//   mass: 68.03,
+//   height: 1.6764,
+//   fullName: 'John Smith',
+//   bmiCalc: function() {
+//     this.bmi = this.mass / Math.pow(this.height, 2);
+//     return this.bmi;
+//   }
+// };
+
+// let mark = {
+//   mass: 77.11,
+//   height: 1.79832,
+//   bmiCalc: function() {
+//     this.bmi = this.mass / Math.pow(this.height, 2);
+//     return this.bmi;
+//   }
+// };
+
+// john.bmiCalc();
+// mark.bmiCalc();
+
+// CODING CHALLENGE 5: ======================
+
+let john = {
+  bills: [124, 48, 268, 180, 42],
+  totalTips: [],
+  totalBills: [],
+  calcTip: function() {
+    for (let i = 0; i < this.bills.length; i++) {
+      let bill = this.bills[i];
+
+      if (bill < 50) {
+        this.totalTips[i] = bill * 0.2;
+      } else if (bill >= 50 && bill < 200) {
+        this.totalTips[i] = bill * 0.15;
+      } else {
+        this.totalTips[i] = bill * 0.1;
+      }
+
+      this.totalBills[i] = this.totalTips[i] + bill;
+    }
   }
 };
 
-foodBills.forEach(bill => {
-  tipBills.push(tipCalc(bill));
-});
+let mark = {
+  bills: [77, 375, 110, 45],
+  totalTips: [],
+  totalBills: [],
+  calcTip: function() {
+    for (let i = 0; i < this.bills.length; i++) {
+      let bill = this.bills[i];
 
-for (let i = 0; i < foodBills.length; i++) {
-  totalBills.push(foodBills[i] + tipBills[i]);
-}
+      if (bill < 100) {
+        this.totalTips[i] = bill * 0.2;
+      } else if (bill >= 100 && bill < 300) {
+        this.totalTips[i] = bill * 0.1;
+      } else {
+        this.totalTips[i] = bill * 0.25;
+      }
 
-console.log(tipBills);
-console.log(totalBills);
+      this.totalBills[i] = this.totalTips[i] + bill;
+    }
+  }
+};
+
+calcAvgTip = (tips, person) => {
+  let sum = 0;
+
+  for (let i = 0; i < tips.length; i++) {
+    sum += tips[i];
+  }
+
+  person.averageTip = sum / tips.length;
+};
+
+john.calcTip();
+mark.calcTip();
+calcAvgTip(john.totalTips, john);
+calcAvgTip(mark.totalTips, mark);
+console.log(john);
+console.log(mark);
