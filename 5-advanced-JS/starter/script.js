@@ -86,6 +86,125 @@
 // console.log(age, obj.city); //age = 27, city = San Francisco
 
 // LECTURE: PASSING FUNCTIONS AS ARGUMENTS
+// var years = [1990, 1965, 1937, 2005, 1995];
+
+// function arrayCalc(arr, fn) {
+//   var arrRes = [];
+//   for (var i = 0; i < arr.length; i++) {
+//     arrRes.push(fn(arr[i]));
+//   }
+//   return arrRes;
+// }
+
+// function calcAge(el) {
+//   return 2016 - el;
+// }
+
+// // calc age is an argument and not immediately invoked thus it is a callback function being eexecuted by arrayCalc
+// var allAges = arrayCalc(years, calcAge);
+// console.log(allAges);
+
+// function isFullAge(el) {
+//   return el >= 18;
+// }
+
+// var fullAges = arrayCalc(allAges, isFullAge);
+// console.log(fullAges);
+
+// function maxHeartRate(el) {
+//   if (el >= 18 && el <= 81) {
+//     return Math.round(206.9 - 0.67 * el);
+//   } else {
+//     return -1;
+//   }
+// }
+
+// var heartRates = arrayCalc(allAges, maxHeartRate);
+// console.log(heartRates);
+
+// // FUNCTIONS RETURNING FUNCTIONS ******************************
+// // FIRST CLASS FUNCTIONS
+// function interviewQuestion(job) {
+//   if (job === 'designer') {
+//     return function(name) {
+//       console.log(name + ', can you please explain what UX design is?');
+//     };
+//   } else if (job === 'teacher') {
+//     return function(name) {
+//       console.log(name + ' what subject do you teach?');
+//     };
+//   } else {
+//     return function(name) {
+//       console.log(name + ' hello what do you do');
+//     };
+//   }
+// }
+
+// var teacherQuestion = interviewQuestion('teacher');
+// var designerQuestion = interviewQuestion('designer');
+
+// teacherQuestion('John');
+// designerQuestion('Jane');
+
+// interviewQuestion('teacher')('Mark');
+
+// //IIFE (IMMEDIATELY INVOKED FUNCTION EXPRESSIONS) ************************
+// // function game() {
+// //   var score = Math.random() * 10;
+// //   console.log(score >= 5);
+// // }
+
+// // game();
+// // code below is the same as above but written as an IFFE
+// (function() {
+//   var score = Math.random() * 10;
+//   console.log(score >= 5);
+// });
+// // for data privacy as score is hidden from global scope
+
+// //CLOSURES *************************************************
+// //an inner function alays has access to variables and parameters of its outer function even after the outer function has returned
+
+// function interviewQuestionClosures(job) {
+//   return function(name) {
+//     if (job === 'designer') {
+//       console.log(name + ' what is UX design');
+//     }
+//   };
+// }
+
+// interviewQuestionClosures('designer')('Johnny');
+
+// LECTURE BIND CALL AND APPLY **********************************************************
+var john = {
+  name: 'John',
+  age: 26,
+  job: 'teacher',
+  presentation: function(style, timeOfDay) {
+    if (style === 'formal') {
+      console.log(
+        `Good ${timeOfDay}, ladies and gentlemen. My name is ${this.name} and I am ${this.age}`
+      );
+    } else {
+      console.log(
+        `Sup I'm ${this.name} and I'm ${this.age}. I'm a ${this.job}. Have a good ${timeOfDay}`
+      );
+    }
+  }
+};
+
+var emily = {
+  name: 'Emily',
+  age: 35,
+  job: 'designer'
+};
+
+john.presentation('formal', 'morning');
+john.presentation.call(emily, 'friendly', 'night');
+
+var emilyFormal = john.presentation.bind(emily, 'formal');
+emilyFormal('afternoon');
+
 var years = [1990, 1965, 1937, 2005, 1995];
 
 function arrayCalc(arr, fn) {
@@ -104,73 +223,9 @@ function calcAge(el) {
 var allAges = arrayCalc(years, calcAge);
 console.log(allAges);
 
-function isFullAge(el) {
-  return el >= 18;
+function isFullAge(limit, el) {
+  return el >= limit;
 }
 
-var fullAges = arrayCalc(allAges, isFullAge);
-console.log(fullAges);
-
-function maxHeartRate(el) {
-  if (el >= 18 && el <= 81) {
-    return Math.round(206.9 - 0.67 * el);
-  } else {
-    return -1;
-  }
-}
-
-var heartRates = arrayCalc(allAges, maxHeartRate);
-console.log(heartRates);
-
-// FUNCTIONS RETURNING FUNCTIONS ******************************
-// FIRST CLASS FUNCTIONS
-function interviewQuestion(job) {
-  if (job === 'designer') {
-    return function(name) {
-      console.log(name + ', can you please explain what UX design is?');
-    };
-  } else if (job === 'teacher') {
-    return function(name) {
-      console.log(name + ' what subject do you teach?');
-    };
-  } else {
-    return function(name) {
-      console.log(name + ' hello what do you do');
-    };
-  }
-}
-
-var teacherQuestion = interviewQuestion('teacher');
-var designerQuestion = interviewQuestion('designer');
-
-teacherQuestion('John');
-designerQuestion('Jane');
-
-interviewQuestion('teacher')('Mark');
-
-//IIFE (IMMEDIATELY INVOKED FUNCTION EXPRESSIONS) ************************
-// function game() {
-//   var score = Math.random() * 10;
-//   console.log(score >= 5);
-// }
-
-// game();
-// code below is the same as above but written as an IFFE
-(function() {
-  var score = Math.random() * 10;
-  console.log(score >= 5);
-});
-// for data privacy as score is hidden from global scope
-
-//CLOSURES *************************************************
-//an inner function alays has access to variables and parameters of its outer function even after the outer function has returned
-
-function interviewQuestionClosures(job) {
-  return function(name) {
-    if (job === 'designer') {
-      console.log(name + ' what is UX design');
-    }
-  };
-}
-
-interviewQuestionClosures('designer')('Johnny');
+var fullJapan = arrayCalc(allAges, isFullAge.bind(this, 20));
+console.log(fullJapan);
