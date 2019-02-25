@@ -176,56 +176,96 @@
 // interviewQuestionClosures('designer')('Johnny');
 
 // LECTURE BIND CALL AND APPLY **********************************************************
-var john = {
-  name: 'John',
-  age: 26,
-  job: 'teacher',
-  presentation: function(style, timeOfDay) {
-    if (style === 'formal') {
-      console.log(
-        `Good ${timeOfDay}, ladies and gentlemen. My name is ${this.name} and I am ${this.age}`
-      );
-    } else {
-      console.log(
-        `Sup I'm ${this.name} and I'm ${this.age}. I'm a ${this.job}. Have a good ${timeOfDay}`
-      );
-    }
+// var john = {
+//   name: 'John',
+//   age: 26,
+//   job: 'teacher',
+//   presentation: function(style, timeOfDay) {
+//     if (style === 'formal') {
+//       console.log(
+//         `Good ${timeOfDay}, ladies and gentlemen. My name is ${this.name} and I am ${this.age}`
+//       );
+//     } else {
+//       console.log(
+//         `Sup I'm ${this.name} and I'm ${this.age}. I'm a ${this.job}. Have a good ${timeOfDay}`
+//       );
+//     }
+//   }
+// };
+
+// var emily = {
+//   name: 'Emily',
+//   age: 35,
+//   job: 'designer'
+// };
+
+// john.presentation('formal', 'morning');
+// john.presentation.call(emily, 'friendly', 'night');
+
+// var emilyFormal = john.presentation.bind(emily, 'formal');
+// emilyFormal('afternoon');
+// // example of apply below but we do not enter args as an array so will not actually work
+// // john.presentation.apply(emily, ['friendly', 'afternoon]);
+
+// // MORE "REAL" EXAMPLE OF BIND
+// var years = [1990, 1965, 1937, 2005, 1995];
+
+// function arrayCalc(arr, fn) {
+//   var arrRes = [];
+//   for (var i = 0; i < arr.length; i++) {
+//     arrRes.push(fn(arr[i]));
+//   }
+//   return arrRes;
+// }
+
+// function calcAge(el) {
+//   return 2016 - el;
+// }
+
+// // calc age is an argument and not immediately invoked thus it is a callback function being eexecuted by arrayCalc
+// var allAges = arrayCalc(years, calcAge);
+// console.log(allAges);
+
+// function isFullAge(limit, el) {
+//   return el >= limit;
+// }
+
+// var fullJapan = arrayCalc(allAges, isFullAge.bind(this, 20));
+// console.log(fullJapan);
+
+// CODING CHALLENGE NUMBER SEVEN *********************
+
+function Question(question, choices, answer) {
+  this.question = question;
+  this.choices = choices;
+  this.answer = answer;
+}
+
+var questionOne = new Question('Is javascript the best?', ['Yes', 'No'], 0);
+var questionTwo = new Question('What day is it?', ['Monday', 'Tuesday'], 0);
+var questionThree = new Question('What day is tomorrow?', ['Monday', 'Tuesday'], 1);
+
+var questionArray = [questionOne, questionTwo, questionThree];
+
+Question.prototype.displayQuestion = function() {
+  console.log(this.question);
+
+  for (var i = 0; i < this.choices.length; i++) {
+    console.log(i + ': ' + this.choices[i]);
   }
 };
 
-var emily = {
-  name: 'Emily',
-  age: 35,
-  job: 'designer'
+Question.prototype.checkAnswer = function(ans) {
+  if (ans === this.answer) {
+    console.log('Correct!');
+  } else {
+    console.log('Incorrect!');
+  }
 };
 
-john.presentation('formal', 'morning');
-john.presentation.call(emily, 'friendly', 'night');
+var n = Math.floor(Math.random() * questionArray.length);
 
-var emilyFormal = john.presentation.bind(emily, 'formal');
-emilyFormal('afternoon');
+questionArray[n].displayQuestion();
 
-var years = [1990, 1965, 1937, 2005, 1995];
-
-function arrayCalc(arr, fn) {
-  var arrRes = [];
-  for (var i = 0; i < arr.length; i++) {
-    arrRes.push(fn(arr[i]));
-  }
-  return arrRes;
-}
-
-function calcAge(el) {
-  return 2016 - el;
-}
-
-// calc age is an argument and not immediately invoked thus it is a callback function being eexecuted by arrayCalc
-var allAges = arrayCalc(years, calcAge);
-console.log(allAges);
-
-function isFullAge(limit, el) {
-  return el >= limit;
-}
-
-var fullJapan = arrayCalc(allAges, isFullAge.bind(this, 20));
-console.log(fullJapan);
+var userChoice = parseInt(prompt('Please choose the correct answer'));
+questionArray[n].checkAnswer(userChoice);
