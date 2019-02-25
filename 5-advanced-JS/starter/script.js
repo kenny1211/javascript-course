@@ -65,7 +65,7 @@ var obj1 = {
 
 // Objects - contains reference in memory, points to object
 var obj2 = obj1;
-obj.age = 30;
+obj1.age = 30;
 console.log(obj1.age, obj2.age); //both = 30
 
 // Functions
@@ -84,3 +84,21 @@ change(age, obj);
 //when primitive is passed in function a simple copy is created, so when can change a but it will never effect var on outside
 // but when we pass obj, we pass reference of obj, so when we change obj inside of function, it is still reflected on the outside
 console.log(age, obj.city); //age = 27, city = San Francisco
+
+// LECTURE: PASSING FUNCTIONS AS ARGUMENTS
+var years = [1990, 1965, 1937, 2005, 1995];
+
+function arrayCalc(arr, fn) {
+  var arrRes = [];
+  for (var i = 0; i < arr.length; ) {
+    arrRes.push(fn(arr[i]));
+  }
+  return arrRes;
+}
+
+function calcAge(el) {
+  return 2016 - el;
+}
+
+var allAges = arrayCalc(years, calcAge);
+console.log(allAges);
