@@ -33,64 +33,64 @@
 // versus function constructor: newly created object inherits from constrtutor's protoype property
 // Object.create benefit: allows us to implement complex inheritance structures; allows us to direclty specify which object should be a protoype
 // MOST POPULAR: function constructors************
-var personProto = {
-  calculateAge: function() {
-    console.log(2016 - this.yearOfBirth);
-  }
-};
+// var personProto = {
+//   calculateAge: function() {
+//     console.log(2016 - this.yearOfBirth);
+//   }
+// };
 
-var john = Object.create(personProto);
-john.name = 'John';
-john.yearOfBirth = 1950;
-john.job = 'teacher';
+// var john = Object.create(personProto);
+// john.name = 'John';
+// john.yearOfBirth = 1950;
+// john.job = 'teacher';
 
-var jane = Object.create(personProto, {
-  name: { value: 'Jane' },
-  yearOfBirth: { value: 1969 },
-  job: { value: 'designer' }
-});
+// var jane = Object.create(personProto, {
+//   name: { value: 'Jane' },
+//   yearOfBirth: { value: 1969 },
+//   job: { value: 'designer' }
+// });
 
 // Primitives vs Objects ***************************
 
 // Primitives - actually hold data in variable itself
-var a = 23;
-var b = a;
-a = 46;
-console.log(a, b); //a = 46, b = 23
+// var a = 23;
+// var b = a;
+// a = 46;
+// console.log(a, b); //a = 46, b = 23
 
-var obj1 = {
-  name: 'John',
-  age: 26
-};
+// var obj1 = {
+//   name: 'John',
+//   age: 26
+// };
 
-// Objects - contains reference in memory, points to object
-var obj2 = obj1;
-obj1.age = 30;
-console.log(obj1.age, obj2.age); //both = 30
+// // Objects - contains reference in memory, points to object
+// var obj2 = obj1;
+// obj1.age = 30;
+// console.log(obj1.age, obj2.age); //both = 30
 
-// Functions
-var age = 27;
-var obj = {
-  name: 'Jonas',
-  city: 'Lisbon'
-};
+// // Functions
+// var age = 27;
+// var obj = {
+//   name: 'Jonas',
+//   city: 'Lisbon'
+// };
 
-function change(a, b) {
-  a = 30;
-  b.city = 'San Francisco';
-}
+// function change(a, b) {
+//   a = 30;
+//   b.city = 'San Francisco';
+// }
 
-change(age, obj);
-//when primitive is passed in function a simple copy is created, so when can change a but it will never effect var on outside
-// but when we pass obj, we pass reference of obj, so when we change obj inside of function, it is still reflected on the outside
-console.log(age, obj.city); //age = 27, city = San Francisco
+// change(age, obj);
+// //when primitive is passed in function a simple copy is created, so when can change a but it will never effect var on outside
+// // but when we pass obj, we pass reference of obj, so when we change obj inside of function, it is still reflected on the outside
+// console.log(age, obj.city); //age = 27, city = San Francisco
 
 // LECTURE: PASSING FUNCTIONS AS ARGUMENTS
 var years = [1990, 1965, 1937, 2005, 1995];
 
 function arrayCalc(arr, fn) {
   var arrRes = [];
-  for (var i = 0; i < arr.length; ) {
+  for (var i = 0; i < arr.length; i++) {
     arrRes.push(fn(arr[i]));
   }
   return arrRes;
@@ -100,5 +100,77 @@ function calcAge(el) {
   return 2016 - el;
 }
 
+// calc age is an argument and not immediately invoked thus it is a callback function being eexecuted by arrayCalc
 var allAges = arrayCalc(years, calcAge);
 console.log(allAges);
+
+function isFullAge(el) {
+  return el >= 18;
+}
+
+var fullAges = arrayCalc(allAges, isFullAge);
+console.log(fullAges);
+
+function maxHeartRate(el) {
+  if (el >= 18 && el <= 81) {
+    return Math.round(206.9 - 0.67 * el);
+  } else {
+    return -1;
+  }
+}
+
+var heartRates = arrayCalc(allAges, maxHeartRate);
+console.log(heartRates);
+
+// FUNCTIONS RETURNING FUNCTIONS ******************************
+// FIRST CLASS FUNCTIONS
+function interviewQuestion(job) {
+  if (job === 'designer') {
+    return function(name) {
+      console.log(name + ', can you please explain what UX design is?');
+    };
+  } else if (job === 'teacher') {
+    return function(name) {
+      console.log(name + ' what subject do you teach?');
+    };
+  } else {
+    return function(name) {
+      console.log(name + ' hello what do you do');
+    };
+  }
+}
+
+var teacherQuestion = interviewQuestion('teacher');
+var designerQuestion = interviewQuestion('designer');
+
+teacherQuestion('John');
+designerQuestion('Jane');
+
+interviewQuestion('teacher')('Mark');
+
+//IIFE (IMMEDIATELY INVOKED FUNCTION EXPRESSIONS) ************************
+// function game() {
+//   var score = Math.random() * 10;
+//   console.log(score >= 5);
+// }
+
+// game();
+// code below is the same as above but written as an IFFE
+(function() {
+  var score = Math.random() * 10;
+  console.log(score >= 5);
+});
+// for data privacy as score is hidden from global scope
+
+//CLOSURES *************************************************
+//an inner function alays has access to variables and parameters of its outer function even after the outer function has returned
+
+function interviewQuestionClosures(job) {
+  return function(name) {
+    if (job === 'designer') {
+      console.log(name + ' what is UX design');
+    }
+  };
+}
+
+interviewQuestionClosures('designer')('Johnny');
