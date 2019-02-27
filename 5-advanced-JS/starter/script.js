@@ -234,38 +234,47 @@
 // console.log(fullJapan);
 
 // CODING CHALLENGE NUMBER SEVEN *********************
-
-function Question(question, choices, answer) {
-  this.question = question;
-  this.choices = choices;
-  this.answer = answer;
-}
-
-var questionOne = new Question('Is javascript the best?', ['Yes', 'No'], 0);
-var questionTwo = new Question('What day is it?', ['Monday', 'Tuesday'], 0);
-var questionThree = new Question('What day is tomorrow?', ['Monday', 'Tuesday'], 1);
-
-var questionArray = [questionOne, questionTwo, questionThree];
-
-Question.prototype.displayQuestion = function() {
-  console.log(this.question);
-
-  for (var i = 0; i < this.choices.length; i++) {
-    console.log(i + ': ' + this.choices[i]);
+(function() {
+  function Question(question, choices, answer) {
+    this.question = question;
+    this.choices = choices;
+    this.answer = answer;
   }
-};
 
-Question.prototype.checkAnswer = function(ans) {
-  if (ans === this.answer) {
-    console.log('Correct!');
-  } else {
-    console.log('Incorrect!');
+  var questionOne = new Question('Is javascript the best?', ['Yes', 'No'], 0);
+  var questionTwo = new Question('What day is it?', ['Monday', 'Tuesday'], 0);
+  var questionThree = new Question('What day is tomorrow?', ['Monday', 'Tuesday'], 1);
+
+  var questionArray = [questionOne, questionTwo, questionThree];
+  var score = 0;
+
+  Question.prototype.displayQuestion = function() {
+    console.log(this.question);
+
+    for (var i = 0; i < this.choices.length; i++) {
+      console.log(i + ': ' + this.choices[i]);
+    }
+  };
+
+  Question.prototype.checkAnswer = function(ans) {
+    if (ans === this.answer) {
+      score++;
+      console.log('Correct! Your score is: ' + score + '/n ---------- /n');
+    } else {
+      score--;
+      console.log('Incorrect!/n Your score is: ' + score + '/n ---------- /n');
+    }
+  };
+
+  function initGame() {
+    var n = Math.floor(Math.random() * questionArray.length);
+    questionArray[n].displayQuestion();
+
+    var userChoice = parseInt(prompt('Please choose the correct answer'));
+    questionArray[n].checkAnswer(userChoice);
+
+    initGame();
   }
-};
 
-var n = Math.floor(Math.random() * questionArray.length);
-
-questionArray[n].displayQuestion();
-
-var userChoice = parseInt(prompt('Please choose the correct answer'));
-questionArray[n].checkAnswer(userChoice);
+  initGame();
+})();
