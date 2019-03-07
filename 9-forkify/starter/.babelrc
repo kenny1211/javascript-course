@@ -1,0 +1,13 @@
+//this file lets babel know about the actual conversion we want - we downloaded babel-preset-env package to specify
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": [
+          "last 5 versions",
+          "ie >= 8"
+        ]
+      }
+    }]
+  ]
+}
