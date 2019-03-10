@@ -11,6 +11,7 @@ export const clearInput = () => {
 //empty search results list - happens after each query
 export const clearResults = () => {
   elements.searchResList.innerHTML = '';
+  elements.searchResPages.innerHTML = '';
 };
 
 // function to keep recipe titles printed to page < 17 characters
@@ -62,10 +63,10 @@ const renderRecipe = recipe => {
 // based on type of prev or next a certain button will be created
 const createButton = (page, type) => `
 <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+<span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
 <svg class="search__icon">
     <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
 </svg>
-<span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
 </button>
 `;
 
