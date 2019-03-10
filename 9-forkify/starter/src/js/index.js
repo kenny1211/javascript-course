@@ -3,7 +3,7 @@
 // // 26b58ff329206e7d1c47ae6121fada7c
 
 import Search from './models/Search';
-import { elements } from './views/base';
+import { elements, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchview';
 // // GLOBAL STATE OF APP
 // /*
@@ -27,12 +27,14 @@ const controlSearch = async () => {
     //3. Prep UI for result
     searchView.clearInput();
     searchView.clearResults();
+    renderLoader(elements.searchRes);
 
     //4. Search Recipes
     await state.search.getResults();
 
     //5. Render results to UI
     console.log(state.search.result);
+    clearLoader();
     searchView.renderResults(state.search.result);
   }
 };
